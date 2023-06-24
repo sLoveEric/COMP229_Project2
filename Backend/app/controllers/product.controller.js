@@ -148,3 +148,23 @@ exports.findAllPublished = (req, res) => {
       });
     });
 };
+
+
+// Find products by name
+exports.findByName = (req, res) => {
+  const name = req.query.name;
+  var condition = name 
+      ? { name: { $regex: new RegExp(name), $options: "i" } } 
+      : {};
+
+  Products.find(condition)
+      .then(data => {
+          res.send(data);
+      })
+      .catch(err => {
+          res.status(500).send({
+              message: err.message || "Some error occurred while retrieving products."
+          });
+      });
+};
+
